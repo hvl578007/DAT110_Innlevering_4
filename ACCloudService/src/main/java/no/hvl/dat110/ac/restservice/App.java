@@ -8,6 +8,7 @@ import static spark.Spark.post;
 import static spark.Spark.delete;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * Hello world!
@@ -89,10 +90,15 @@ public class App {
 		put("/accessdevice/code", (req, res) -> {
 			Gson gson = new Gson();
 			
-			AccessCode code = gson.fromJson(req.body(), AccessCode.class);
-			accesscode.setAccesscode(code.getAccesscode());
+			try {
+				AccessCode code = gson.fromJson(req.body(), AccessCode.class);
+				accesscode.setAccesscode(code.getAccesscode());
 
-			return gson.toJson(code);
+				return gson.toJson(code);
+			} catch (JsonSyntaxException e) {
+				return gson.toJson("Feil JSON-format på koden");
+			}
+			
 		});
 
 		get("/accessdevice/code", (req, res) -> {
