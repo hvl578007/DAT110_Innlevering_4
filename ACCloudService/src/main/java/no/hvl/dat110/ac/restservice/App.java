@@ -51,11 +51,17 @@ public class App {
 
 			Gson gson = new Gson();
 
-			AccessMessage message = gson.fromJson(req.body(), AccessMessage.class);
+			try {
+				AccessMessage message = gson.fromJson(req.body(), AccessMessage.class);
 
-			int id = accesslog.add(message.getMessage());
+				int id = accesslog.add(message.getMessage());
 
-			return gson.toJson(accesslog.get(id));
+				return gson.toJson(accesslog.get(id));
+				
+			} catch (JsonSyntaxException e) {
+				return gson.toJson("Feil JSON-format på meldingen");
+			}
+			
 		});
 
 		get("/accessdevice/log", (req, res) -> {
