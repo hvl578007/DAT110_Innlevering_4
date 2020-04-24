@@ -103,6 +103,7 @@ public class App {
 			try {
 				AccessCode code = gson.fromJson(req.body(), AccessCode.class);
 
+				//burde nok også sjekke at kodane berre er 1 og 2
 				if (code == null || code.getAccesscode() == null || code.getAccesscode().length != 2) {
 					return gson.toJson("Feil JSON-format på koden");
 				}
