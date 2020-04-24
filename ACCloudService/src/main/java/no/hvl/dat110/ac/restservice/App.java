@@ -54,6 +54,10 @@ public class App {
 			try {
 				AccessMessage message = gson.fromJson(req.body(), AccessMessage.class);
 
+				if (message == null || message.getMessage() == null || message.getMessage().equals("")) {
+					return gson.toJson("Feil JSON-format på meldingen");
+				}
+
 				int id = accesslog.add(message.getMessage());
 
 				return gson.toJson(accesslog.get(id));
@@ -98,6 +102,11 @@ public class App {
 			
 			try {
 				AccessCode code = gson.fromJson(req.body(), AccessCode.class);
+
+				if (code == null || code.getAccesscode() == null || code.getAccesscode().length != 2) {
+					return gson.toJson("Feil JSON-format på koden");
+				}
+
 				accesscode.setAccesscode(code.getAccesscode());
 
 				return gson.toJson(code);
